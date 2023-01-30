@@ -58,7 +58,7 @@
             <div class="invalid-feedback">Passwords do not match!</div>
         </div>
 
-        <button class="btn btn-primary">Sign Up!</button>
+        <button class="btn btn-primary" id="btnSignup" disabled>Sign Up!</button>
 
     </div>
 </div>
@@ -68,30 +68,64 @@
 
     // THIS!!! - Corresponds to the object referred to
 
+    // Flags
+    let isEmailValid = false;
+    let isPasswordValid = false;
+    let isRetypePasswordValid = false;
+
     $(document).ready(function(){
 
 
         $('#email').keyup(function(){
 
-            // console.log($(this).val());
-            console.log(checkEmail($(this).val()));
-
             if(checkEmail($(this).val())){
                 $(this).removeClass('is-invalid').addClass('is-valid');
+                isEmailValid = true;
             }
             else{
                 $(this).removeClass('is-valid').addClass('is-invalid');
+                isEmailValid = false;
             }
 
+            changeSignupButtonStatus($('#btnSignup'));
+
+
         })
+
 
         $('#password').keyup(function(){
-            console.log($(this).val());
+   
+            if(checkPasswordStrength($(this).val())){
+                $(this).removeClass('is-invalid').addClass('is-valid');
+                isPasswordValid = true;
+            }
+            else{
+                $(this).removeClass('is-valid').addClass('is-invalid');
+                isPasswordValid = false;
+            }
+            changeSignupButtonStatus($('#btnSignup'));
+
         })
 
+
         $('#retypePassword').keyup(function(){
-            console.log($(this).val());
+
+            if(checkPasswordMatch($(this).val())){
+                $(this).removeClass('is-invalid').addClass('is-valid');
+                isRetypePasswordValid = true;
+            }
+            else{
+                $(this).removeClass('is-valid').addClass('is-invalid');
+                isRetypePasswordValid = false;
+            }
+
+            changeSignupButtonStatus($('#btnSignup'));
+       
         })
+
+        $('#btnSignup').click(function(){
+            alert('Button clicked');
+        });
 
 
     })
@@ -103,6 +137,44 @@ function checkEmail(email){
         return (true)
     }
         return (false)
+}
+
+function checkPasswordStrength(password){
+    if(password.length >= 3){
+        return true;
+    }
+    else{
+        return false;
+    }
+
+}
+
+function checkPasswordMatch(password){
+    let password1 = $('#password').val();
+    if(password === password1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function checkFormValid(){
+    if(isEmailValid && isPasswordValid && isRetypePasswordValid){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+function changeSignupButtonStatus(btnSignup){
+    if(checkFormValid()){
+        $(btnSignup).removeAttr('disabled');
+    }
+    else{
+        $(btnSignup).attr('disabled', true);
+    }
 }
 
 </script>
