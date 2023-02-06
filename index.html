@@ -58,7 +58,46 @@
             <div class="invalid-feedback">Passwords do not match!</div>
         </div>
 
-        <button class="btn btn-primary" id="btnSignup" disabled>Sign Up!</button>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="" id="subscribeNewsletter">
+            <label class="form-check-label" for="subscribeNewsletter">
+                Subscribe to newsletters
+            </label>
+        </div>
+
+        <div id="newsletterOptions" class="d-none">
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input newsletterFrequency" type="radio" name="frequencyOption" id="nsDaily" value="daily" checked>
+                <label class="form-check-label" for="nsDaily">Daily</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input newsletterFrequency" type="radio" name="frequencyOption" id="nsWeekly" value="weekly">
+                <label class="form-check-label" for="nsWeekly">Weekly</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input newsletterFrequency" type="radio" name="frequencyOption" id="nsBiWeekly" value="biweekly">
+                <label class="form-check-label" for="nsBiWeekly">Bi-Weekly</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input newsletterFrequency" type="radio" name="frequencyOption" id="nsMonthly" value="monthly">
+                <label class="form-check-label" for="nsMonthly">Monthly</label>
+            </div>
+
+        </div>
+
+        <fieldset>
+            <legend>Address</legend>
+            <input type="text">
+            <input type="text">
+            <input type="text">
+        </fieldset>
+
+        <div class="mt-3">
+            <button class="btn btn-primary" id="btnSignup" disabled>Sign Up!</button>
+        </div>
+        
 
     </div>
 </div>
@@ -67,6 +106,8 @@
 <script>
 
     // THIS!!! - Corresponds to the object referred to
+
+   
 
     // Flags
     let isEmailValid = false;
@@ -123,8 +164,35 @@
        
         })
 
+        //for the checkbox - to show/hide newsletter frequency options
+        $('#subscribeNewsletter').click(function(){
+            //will execute when the checkbox is clicked
+            // Every checkbox has a jQuery property called 'checked'
+            // console.log('Checkbox status:', $(this).prop('checked'));
+            if($(this).prop('checked')){
+                $('#newsletterOptions').removeClass('d-none').fadeOut(0).fadeIn();
+            }
+            else{
+                $('#newsletterOptions').fadeIn(0).fadeOut();
+            }
+        })
+
+        // getting the user's option for newsletter frequency
+        $('.newsletterFrequency').click(function(){
+            console.log($(this).val());
+        })
+
         $('#btnSignup').click(function(){
-            alert('Button clicked');
+            // alert('Button clicked');
+            let signupObj = {
+                email: $('#email').val(),
+                password: $('#password').val(),
+                newsLetterSubscription: {
+                    hasOpted: $('#subscribeNewsletter').prop('checked'),
+                    frequency: $('.newsletterFrequency[name="frequencyOption"]:checked').val()
+                }
+            }
+            console.log('Final form object to be sent to the server:', signupObj);
         });
 
 
